@@ -11,3 +11,12 @@ body {
   height: 100vh;
   width: 100vw;
 }
+
+.ol-control button {
+  background-color: aqua !important;
+  color: red !important;
+  width: 1em !important;
+  height: 1em !important;
+  line-height: .5em !important;
+  display: compact !important;
+}
