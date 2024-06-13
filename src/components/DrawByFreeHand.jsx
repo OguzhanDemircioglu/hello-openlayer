@@ -68,10 +68,10 @@ function DrawByFreeHand() {
             let drawnFeatures = parser.writeFeatureObject(newFeature);
             console.log(drawnFeatures.geometry);
         });
-
-    }, [selectedType]);
-
-
+        
+        return () => map.setTarget(null);
+    }, [vector]);
+    
     return (
         <>
             {/*<select style={{ position: 'fixed', bottom: 0, left: 0, zIndex: 1000 }}

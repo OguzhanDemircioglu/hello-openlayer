@@ -6,9 +6,11 @@ import {OSM} from "ol/source";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import * as olProj from "ol/proj";
+import {defaults, FullScreen, MousePosition, OverviewMap, ScaleLine, ZoomSlider, ZoomToExtent} from 'ol/control';
+import "../App.css";
 
-function Home() {
-    const mapRef = useRef(null);
+function MapControls() {
+    const mapRef = useRef(false);
 
     const source = new VectorSource({wrapX: false});
 
@@ -17,6 +19,7 @@ function Home() {
     });
 
     useEffect(() => {
+
         olProj.useGeographic();
 
         const map = new Map({
@@ -34,7 +37,22 @@ function Home() {
                 }), vector
             ],
             target: mapRef.current,
-            keyboardEventTarget: document
+            keyboardEventTarget: document,
+            controls: defaults().extend([
+                new FullScreen(),
+                new MousePosition(),
+                new OverviewMap({
+                    collapsed: false,
+                    layers: [
+                        new TileLayer({
+                            source: new OSM()
+                        })
+                    ]
+                }),
+                new ScaleLine(),
+                new ZoomSlider(),
+                new ZoomToExtent()
+            ])
         });
 
         map.on('click', function (e) {
@@ -42,13 +60,15 @@ function Home() {
             console.log(coordinates);
         });
 
-    }, []);
+        return () => map.setTarget(null);
+
+    }, [vector]);
 
     return (
-        <>
+        <div>
             <div id="js-map" className="map" ref={mapRef}/>
-        </>
+        </div>
     );
 }
 
-export default Home;
+export default MapControls;
